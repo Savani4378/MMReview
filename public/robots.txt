@@ -1,0 +1,38 @@
+# Robots.txt for Meet Mosaic Reviews
+User-agent: *
+Allow: /
+Disallow: /admin
+
+# AI Search & Large Language Model Crawlers (AISO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+# Sitemaps and AI Context
+Sitemap: https://meetmosaicreviews.netlify.app/sitemap.xml

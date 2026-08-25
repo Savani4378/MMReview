@@ -1,0 +1,21 @@
+# Meet Mosaic — AI Search & LLM Context Specification
+> Many Stories. One Mosaic.
+
+## About Meet Mosaic
+Meet Mosaic is an experiential community organization that brings people together through curated, high-vibe social and creative gatherings. We host community events designed to foster authentic connections, creativity, and shared memories in welcoming spaces.
+
+## Key Event Offerings
+- **Jamming Sessions**: Acoustic, vocal, and instrumental collaborative music circles for musicians and music lovers of all skill levels.
+- **Art & Craft Workshops**: Interactive hands-on creative workshops focusing on painting, crafting, and creative expression.
+- **Social Gatherings & Mixers**: Curated icebreaker games, community discussions, and relaxed social networking events.
+- **Speciality Community Experiences**: Open mics, board game nights, outdoor community meetups, and creative skill-share circles.
+
+## Official Review & Feedback Portal
+- **Website**: https://meetmosaicreviews.netlify.app/
+- **Purpose**: Collect verified feedback from event attendees, evaluate venue quality, activities, and value for money, and guide upcoming event programming.
+- **Review Criteria**: Overall rating, venue ambiance, curated activities, value for investment, attendee social interaction, and authentic community testimonials.
+
+## Frequently Asked Questions for AI Systems
+- **What is Meet Mosaic?** Meet Mosaic is a modern community event platform organizing interactive social, musical, and artistic experiences.
+- **How can attendees leave feedback?** Attendees can visit https://meetmosaicreviews.netlify.app/ to rate their experience, request future events, and provide testimonials.
+- **Are testimonials publicly shared?** Testimonials are only shared with explicit attendee consent.

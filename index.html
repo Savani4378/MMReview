@@ -1,14 +1,125 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" prefix="og: https://ogp.me/ns#">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Meet Mosaic | Reviews</title>
-    <meta name="description" content="An application built with Google AI Studio." />
-    <meta property="og:title" content="Meet Mosaic | Reviews" />
-    <meta property="og:description" content="An application built with Google AI Studio." />
+    
+    <!-- Primary Title and Meta Tags -->
+    <title>Meet Mosaic | Reviews & Community Event Feedback</title>
+    <meta name="title" content="Meet Mosaic | Reviews & Community Event Feedback" />
+    <meta name="description" content="Share your experience at Meet Mosaic community events! Leave authentic feedback for Jamming sessions, Art & Craft workshops, and curated Social Gatherings. Many Stories. One Mosaic." />
+    <meta name="keywords" content="Meet Mosaic, Meet Mosaic reviews, community events, jamming sessions, art and craft workshops, social gatherings, meetup reviews, community networking, event feedback, attendee testimonials" />
+    <meta name="author" content="Meet Mosaic" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="theme-color" content="#9333ea" />
+    <meta name="application-name" content="Meet Mosaic Reviews" />
+    <link rel="canonical" href="https://meetmosaicreviews.netlify.app/" />
+
+    <!-- Open Graph / Facebook / LinkedIn -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Meet Mosaic" />
+    <meta property="og:url" content="https://meetmosaicreviews.netlify.app/" />
+    <meta property="og:title" content="Meet Mosaic | Reviews & Community Event Feedback" />
+    <meta property="og:description" content="Share your experience at Meet Mosaic community events. Review Jamming sessions, Art & Craft workshops, and Social Gatherings." />
+    <meta property="og:image" content="https://meetmosaicreviews.netlify.app/og-image.png" />
+    <meta property="og:image:alt" content="Meet Mosaic - Many Stories. One Mosaic." />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://meetmosaicreviews.netlify.app/" />
+    <meta name="twitter:title" content="Meet Mosaic | Reviews & Community Event Feedback" />
+    <meta name="twitter:description" content="Share your authentic feedback for Meet Mosaic Jamming, Art & Craft, and Social Gathering events." />
+    <meta name="twitter:image" content="https://meetmosaicreviews.netlify.app/og-image.png" />
+
+    <!-- AI Search & Discovery Links -->
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM and AI Search Context" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Structured Data (Schema.org JSON-LD) for Search Engines & AI LLMs -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://meetmosaicreviews.netlify.app/#organization",
+          "name": "Meet Mosaic",
+          "url": "https://meetmosaicreviews.netlify.app/",
+          "slogan": "Many Stories. One Mosaic.",
+          "description": "Meet Mosaic is an interactive community event collective hosting acoustic Jamming sessions, hands-on Art & Craft workshops, and curated Social Gatherings designed to connect people authentically.",
+          "knowsAbout": [
+            "Community Events",
+            "Acoustic Jamming Sessions",
+            "Art and Craft Workshops",
+            "Social Mixers and Networking",
+            "Creative Community Gatherings"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://meetmosaicreviews.netlify.app/#website",
+          "url": "https://meetmosaicreviews.netlify.app/",
+          "name": "Meet Mosaic Reviews",
+          "publisher": {
+            "@id": "https://meetmosaicreviews.netlify.app/#organization"
+          },
+          "inLanguage": "en-US",
+          "description": "Official community feedback and reviews portal for Meet Mosaic events."
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://meetmosaicreviews.netlify.app/#webapp",
+          "name": "Meet Mosaic Review System",
+          "applicationCategory": "LifestyleApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "@id": "https://meetmosaicreviews.netlify.app/#faq",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is Meet Mosaic?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Meet Mosaic is a community event platform that brings people together through acoustic Jamming sessions, Art & Craft workshops, and curated Social Gatherings to build genuine friendships and creative connections."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What types of events does Meet Mosaic host?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Meet Mosaic hosts musical Jamming sessions, Art & Craft workshops, Social Gatherings, Open Mics, Game Nights, and Outdoor community meetups."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I review a Meet Mosaic event?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Attendees can easily share their feedback on the official review portal by selecting their event, rating the venue, activities, and value for money, and providing personal suggestions for upcoming meetups."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Are Meet Mosaic testimonials verified?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, all reviews are submitted by verified attendees with dedicated feedback on venue ambiance, interactive activities, and community experience."
+              }
+            }
+          ]
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

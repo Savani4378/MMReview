@@ -3,31 +3,39 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { GoogleGenAI } from "@google/genai";
+import OpenAI from "openai";
 
-let ai: GoogleGenAI | null = null;
+let openaiClient: OpenAI | null = null;
 
-function getAI(): GoogleGenAI {
-  if (!ai) {
-    const key = process.env.GEMINI_API_KEY;
+function getOpenAI(): OpenAI {
+  if (!openaiClient) {
+    // Allow fallback to GEMINI_API_KEY if the user placed it there
+    const key = process.env.OPENAI_API_KEY || process.env.GEMINI_API_KEY;
     if (!key) {
-      throw new Error("GEMINI_API_KEY environment variable is required");
+      throw new Error("OPENAI_API_KEY environment variable is required");
     }
-    ai = new GoogleGenAI({
+    openaiClient = new OpenAI({
       apiKey: key,
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build',
-        }
-      }
     });
   }
-  return ai;
+  return openaiClient;
 }
 
 async function startServer() {
   const app = express();
   const PORT = 3000;
+
+  // Security headers middleware
+  app.use((_req, res, next) => {
+    res.setHeader(
+      "Content-Security-Policy",
+      "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:; connect-src 'self' https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://*.googleapis.com https://*.firebaseio.com https://api.openai.com https:; frame-ancestors 'self' https://ai.studio https://*.google.com https://*.run.app; base-uri 'self'; form-action 'self';"
+    );
+    res.setHeader("X-Frame-Options", "SAMEORIGIN");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+    next();
+  });
 
   // Allow requests from the deployed Netlify admin panel
   app.use(cors({
@@ -62,13 +70,13 @@ Return ONLY valid JSON matching this structure without any markdown backticks:
 }
 Ensure whatsappNumber is 10 digits starting with 9. The event should be one of: 'Jamming', 'Art & Craft', or 'Social Gathering'.
 `;
-      const aiClient = getAI();
-      const response = await aiClient.models.generateContent({
-        model: 'gemini-3.7-flash',
-        contents: prompt
+      const aiClient = getOpenAI();
+      const response = await aiClient.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [{ role: 'user', content: prompt }]
       });
       
-      const text = response.text || "{}";
+      const text = response.choices[0].message.content || "{}";
       // Clean up potential markdown formatting
       const jsonStr = text.replace(/```json\n?|\n?```/g, "").trim();
       const data = JSON.parse(jsonStr);
@@ -83,7 +91,7 @@ Ensure whatsappNumber is 10 digits starting with 9. The event should be one of: 
   app.post("/api/suggest-review", async (req, res) => {
     try {
       const { event, rating, field } = req.body;
-      const aiClient = getAI();
+      const aiClient = getOpenAI();
       
       let prompt = "";
       const eventName = event || "a generic Meet Mosaic event";
@@ -99,12 +107,12 @@ Ensure whatsappNumber is 10 digits starting with 9. The event should be one of: 
         return res.status(400).json({ error: "Invalid field" });
       }
 
-      const response = await aiClient.models.generateContent({
-        model: 'gemini-3.7-flash',
-        contents: prompt
+      const response = await aiClient.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [{ role: 'user', content: prompt }]
       });
       
-      const text = response.text?.replace(/^["']|["']$/g, '').trim() || "";
+      const text = response.choices[0].message.content?.replace(/^["']|["']$/g, '').trim() || "";
       res.json({ suggestion: text });
     } catch (error) {
       console.error("AI Suggestion Error:", error);

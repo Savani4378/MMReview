@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { BrandHeader } from '../components/BrandHeader';
 import { FormSection } from '../components/FormSection';
 import { SuccessScreen } from '../components/SuccessScreen';
+import { Footer } from '../components/Footer';
 import { TextField } from '../components/ui/TextField';
 import { SelectField } from '../components/ui/SelectField';
 import { StarRating } from '../components/ui/StarRating';
@@ -214,15 +215,18 @@ export const ReviewPage: React.FC = () => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-[#f8f5fb] px-4 py-8">
-        <SuccessScreen />
+      <div className="min-h-screen bg-[#f8f5fb] flex flex-col justify-between">
+        <div className="flex-grow flex items-center justify-center px-4 py-8">
+          <SuccessScreen />
+        </div>
+        <Footer />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f5fb] font-sans selection:bg-purple-200 selection:text-purple-900 pb-20">
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#f8f5fb] font-sans selection:bg-purple-200 selection:text-purple-900 flex flex-col justify-between">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-grow">
         <BrandHeader />
         
         <motion.div
@@ -398,6 +402,8 @@ export const ReviewPage: React.FC = () => {
           </motion.button>
         </form>
       </div>
-    </div>
+
+      <Footer />
+    </main>
   );
 };

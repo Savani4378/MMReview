@@ -5,21 +5,14 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ReviewPage } from './pages/ReviewPage';
-import { useEffect } from 'react';
-
-const AdminRedirect = () => {
-  useEffect(() => {
-    window.location.href = 'https://meetmosaicreviews.netlify.app/admin';
-  }, []);
-  return null;
-};
+import { AdminPage } from './pages/AdminPage';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<ReviewPage />} />
-        <Route path="/admin" element={<AdminRedirect />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </BrowserRouter>
   );
