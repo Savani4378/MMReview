@@ -1,26 +1,19 @@
+import { collection, addDoc, getDocs, deleteDoc, doc, Timestamp, orderBy, query } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 import { ReviewData } from '../types';
 
-const STORAGE_KEY = 'meet_mosaic_reviews';
+const COLLECTION_NAME = 'reviews';
 
 export const reviewService = {
   submitReview: async (reviewData: ReviewData): Promise<{ success: boolean; id: string }> => {
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 800));
-
     try {
-      const existingReviewsJson = localStorage.getItem(STORAGE_KEY);
-      const existingReviews: ReviewData[] = existingReviewsJson ? JSON.parse(existingReviewsJson) : [];
-
-      const newReview: ReviewData = {
+      const dataToSave = {
         ...reviewData,
-        id: crypto.randomUUID(),
-        submittedAt: new Date().toISOString(),
+        submittedAt: Timestamp.now()
       };
-
-      existingReviews.push(newReview);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(existingReviews));
-
-      return { success: true, id: newReview.id as string };
+      
+      const docRef = await addDoc(collection(db, COLLECTION_NAME), dataToSave);
+      return { success: true, id: docRef.id };
     } catch (error) {
       console.error('Failed to submit review:', error);
       throw new Error('Failed to submit review. Please try again later.');
@@ -28,15 +21,34 @@ export const reviewService = {
   },
 
   getReviews: async (): Promise<ReviewData[]> => {
-    // Simulate network delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-
     try {
-      const existingReviewsJson = localStorage.getItem(STORAGE_KEY);
-      return existingReviewsJson ? JSON.parse(existingReviewsJson) : [];
+      const q = query(collection(db, COLLECTION_NAME), orderBy('submittedAt', 'desc'));
+      const querySnapshot = await getDocs(q);
+      
+      const reviews: ReviewData[] = [];
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        reviews.push({
+          id: doc.id,
+          ...data,
+          // Convert Firestore Timestamp to ISO string if needed
+          submittedAt: data.submittedAt?.toDate?.()?.toISOString() || data.submittedAt
+        } as ReviewData);
+      });
+      
+      return reviews;
     } catch (error) {
       console.error('Failed to get reviews:', error);
       return [];
+    }
+  },
+  
+  deleteReview: async (id: string): Promise<void> => {
+    try {
+      await deleteDoc(doc(db, COLLECTION_NAME, id));
+    } catch (error) {
+      console.error('Failed to delete review:', error);
+      throw error;
     }
   }
 };

@@ -13,19 +13,16 @@ import { reviewService } from '../services/reviewService';
 import { ReviewData, ValidationErrors } from '../types';
 
 const EVENT_OPTIONS = [
-  { label: 'Jamming Night 🎸', value: 'Jamming Night' },
-  { label: 'Gossip & Gupshup ☕', value: 'Gossip & Gupshup' },
-  { label: 'Social Meetup 🤝', value: 'Social Meetup' },
-  { label: 'Open Mic 🎤', value: 'Open Mic' },
-  { label: 'Games & Activities 🎲', value: 'Games & Activities' },
-  { label: 'Networking Event 💼', value: 'Networking Event' },
-  { label: 'Other', value: 'Other' }
+  { label: 'Jamming', value: 'Jamming' },
+  { label: 'Art & Craft', value: 'Art & Craft' },
+  { label: 'Social Gathering', value: 'Social Gathering' }
 ];
 
 const NEXT_EVENT_OPTIONS = [
-  { label: 'Jamming Night 🎸', value: 'Jamming Night' },
-  { label: 'Gossip & Gupshup ☕', value: 'Gossip & Gupshup' },
-  { label: 'Networking 🤝', value: 'Networking' },
+  { label: 'Jamming 🎸', value: 'Jamming' },
+  { label: 'Art & Craft 🎨', value: 'Art & Craft' },
+  { label: 'Social Gathering 🤝', value: 'Social Gathering' },
+  { label: 'Networking 💼', value: 'Networking' },
   { label: 'Open Mic 🎤', value: 'Open Mic' },
   { label: 'Games & Activities 🎲', value: 'Games & Activities' },
   { label: 'Outdoor Activities 🌄', value: 'Outdoor Activities' },
@@ -84,6 +81,7 @@ export const ReviewPage: React.FC = () => {
 
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [urlEventName, setUrlEventName] = useState<string | null>(null);
+  const [suggestingField, setSuggestingField] = useState<string | null>(null);
 
   useEffect(() => {
     // Read event from URL on mount
@@ -125,9 +123,41 @@ export const ReviewPage: React.FC = () => {
     }
   };
 
+  const handleSuggest = async (field: 'liked' | 'improvement' | 'testimonial') => {
+    setSuggestingField(field);
+    try {
+      const response = await fetch('/api/suggest-review', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: formData.event,
+          rating: formData.overallRating,
+          field
+        })
+      });
+      
+      if (!response.ok) throw new Error('Failed to fetch suggestion');
+      
+      const data = await response.json();
+      if (data.suggestion) {
+        setFormData(prev => ({ ...prev, [field]: data.suggestion }));
+      }
+    } catch (error) {
+      console.error('Failed to get suggestion:', error);
+      alert('Failed to generate suggestion. Please try again.');
+    } finally {
+      setSuggestingField(null);
+    }
+  };
+
   const validateForm = (): boolean => {
     const newErrors: ValidationErrors = {};
     let isValid = true;
+
+    if (!formData.name?.trim()) {
+      newErrors.name = 'Please enter your name.';
+      isValid = false;
+    }
 
     if (!formData.whatsappNumber || !validateWhatsApp(formData.whatsappNumber)) {
       newErrors.whatsappNumber = 'Please enter a valid 10-digit Indian WhatsApp number starting with 6-9.';
@@ -219,8 +249,10 @@ export const ReviewPage: React.FC = () => {
             <TextField
               label="Name"
               placeholder="Enter your name"
+              required
               value={formData.name}
               onChange={(e) => handleChange('name', e.target.value)}
+              error={errors.name}
             />
             
             <TextField
@@ -313,6 +345,8 @@ export const ReviewPage: React.FC = () => {
               placeholder="Tell us what made your experience special..."
               value={formData.liked}
               onChange={(e) => handleChange('liked', e.target.value)}
+              onSuggest={() => handleSuggest('liked')}
+              isSuggesting={suggestingField === 'liked'}
             />
             
             <TextArea
@@ -320,6 +354,8 @@ export const ReviewPage: React.FC = () => {
               placeholder="Be honest — we genuinely want to improve."
               value={formData.improvement}
               onChange={(e) => handleChange('improvement', e.target.value)}
+              onSuggest={() => handleSuggest('improvement')}
+              isSuggesting={suggestingField === 'improvement'}
             />
             
             <SelectField
@@ -334,6 +370,8 @@ export const ReviewPage: React.FC = () => {
               placeholder='Example: "I came alone and ended up making new friends!"'
               value={formData.testimonial}
               onChange={(e) => handleChange('testimonial', e.target.value)}
+              onSuggest={() => handleSuggest('testimonial')}
+              isSuggesting={suggestingField === 'testimonial'}
             />
             
             <RadioGroup

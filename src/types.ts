@@ -21,6 +21,7 @@ export interface ReviewData {
 }
 
 export interface ValidationErrors {
+  name?: string;
   whatsappNumber?: string;
   mailId?: string;
   event?: string;

@@ -1,0 +1,9 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /reviews/{review} {
+      allow read: if true; // In production this would be protected, but we need it open for simple admin login right now (without real firebase auth for admin)
+      allow write: if true;
+    }
+  }
+}
