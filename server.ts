@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
@@ -12,7 +13,14 @@ function getAI(): GoogleGenAI {
     if (!key) {
       throw new Error("GEMINI_API_KEY environment variable is required");
     }
-    ai = new GoogleGenAI({ apiKey: key });
+    ai = new GoogleGenAI({
+      apiKey: key,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
   }
   return ai;
 }
@@ -20,6 +28,12 @@ function getAI(): GoogleGenAI {
 async function startServer() {
   const app = express();
   const PORT = 3000;
+
+  // Allow requests from the deployed Netlify admin panel
+  app.use(cors({
+    origin: ['https://meetmosaicreviews.netlify.app', 'http://localhost:3000'],
+    credentials: true
+  }));
 
   app.use(express.json());
 
@@ -50,7 +64,7 @@ Ensure whatsappNumber is 10 digits starting with 9. The event should be one of: 
 `;
       const aiClient = getAI();
       const response = await aiClient.models.generateContent({
-        model: 'gemini-2.5-pro',
+        model: 'gemini-3.7-flash',
         contents: prompt
       });
       
@@ -86,7 +100,7 @@ Ensure whatsappNumber is 10 digits starting with 9. The event should be one of: 
       }
 
       const response = await aiClient.models.generateContent({
-        model: 'gemini-2.5-pro',
+        model: 'gemini-3.7-flash',
         contents: prompt
       });
       
