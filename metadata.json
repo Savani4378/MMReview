@@ -1,0 +1,6 @@
+{
+  "name": "Meet Mosaic Feedback",
+  "description": "Customer feedback and review portal for Meet Mosaic events.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
